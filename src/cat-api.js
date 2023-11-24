@@ -5,11 +5,11 @@ axios.defaults.headers.common["x-api-key"] = "live_p70F1cy4wGzn6QiBmW7PfGjOaVwrY
 
 export function fetchBreeds() {
     return axios.get(`${BASE_URL}/breeds`)
-        .then(response => {
-            console.log(response);
-    })
-}
+        .then(response => response.data)
+        .catch(error => console.error(error));
+        }
 
 // export function fetchCatByBreed(breedId) {
+//     return axios.get(`${BASE_URL}/images/search?breed_ids=`)
     
 // }

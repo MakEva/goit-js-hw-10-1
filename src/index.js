@@ -1,33 +1,41 @@
 import SlimSelect from 'slim-select';
+import "slim-select/dist/SlimSelect.css";
+import { fetchBreeds } from "./cat-api.js";
 
-new SlimSelect({
-    select: '#single'
-});
+const refs = {
+selectEl: document.querySelector(".breed-select"),
+};
 
-import { fetchBreeds } from "./cat-api";
+fetchBreeds()
+    .then((data) => {
+        (refs.selectEl.insertAdjacentHTML("beforeend", createMarcupListBreedId(data)));
 
-const selectEl = document.querySelector("select.breed-select");
-
-selectEl.addEventListener("select", onSelect); // ??? на подію select?
-
-function onSelect() {
-
-    fetchBreeds()
-    .then((data) => (selectEl.insertAdjacentHTML("beforeend", createMarcupListBreedId(data))))
+    new SlimSelect({
+    select: refs.selectEl
+    });
+    })
     .catch((error) => console.log(error));
-}
-
 
 
 function createMarcupListBreedId(arr) {
-    return arr.map((id, name) => {
-        `<option value="${id}">${name}</option>
-    `
-    }).join("");
+    return arr.map(({ id, name }) => 
+        `<option value="${id}">${name}</option>`
+    ).join("");
 }
+ 
+// fetchBreeds()
+//     .then((breeds) => {
+//         const breedItem = breeds.map(({ id, name }) => 
+//         `<option value="${id}">${name}</option>`
+//     ).join("");
+//         (refs.selectEl.insertAdjacentHTML("beforeend", breedItem));
 
-// <select id="single">
-//   <option value="value 1">Value 1</option>
-//   <option value="value 2">Value 2</option>
-//   <option value="value 3">Value 3</option>
-// </select>
+//    new SlimSelect({
+//     select: refs.selectEl
+//     });
+//     })
+//     .catch(error => console.error(error));
+
+
+
+// selectEl.addEventListener("select", fetchCatByBreed);
